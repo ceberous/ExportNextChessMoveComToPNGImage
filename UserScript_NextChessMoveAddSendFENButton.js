@@ -44,6 +44,12 @@ function getLatestFEN() {
 
 	if ( !links[ 10 ] ) { return; }
 	latest_fen = links[ 10 ].innerHTML;
+	if ( latest_fen === "Stockfish 10" ) {
+		if ( links[ 12 ] ) {
+			latest_fen = links[ 12 ].innerHTML
+		}
+		else { latest_fen = "error , re-print link order" }
+	}
 
 }
 
