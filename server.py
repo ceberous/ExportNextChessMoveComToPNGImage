@@ -2,6 +2,7 @@
 # https://github.com/Pithikos/python-websocket-server
 from websocket_server import WebsocketServer
 
+import session_manager as manager
 
 LatestFEN = None
 
@@ -19,7 +20,7 @@ def message_received(client, server, message):
 	#print( "Client(%d) said: %s" % ( client['id'] , message ) )
 	if message != LatestFEN:
 		LatestFEN = message
-		print( LatestFEN )
+		manager.new_fen( LatestFEN )
 
 PORT=9001
 server = WebsocketServer( PORT )
