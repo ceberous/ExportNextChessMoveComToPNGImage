@@ -10,9 +10,19 @@ fen_index = 1
 
 def render_fen( wFEN ):
 	global fen_index
+
+	number_part = str( fen_index )
+	if fen_index < 1000:
+		number_part = "0" + number_part
+	if fen_index < 100:
+		number_part = "0" + number_part
+	if fen_index < 10:
+		number_part = "0" + number_part
+
 	renderer = Renderer()
 	surface = renderer.render( wFEN )
-	wPath = os.path.join( c4_dir , str( fen_index ) + ".png" )
+
+	wPath = os.path.join( c4_dir , number_part + ".png" )
 	print( "Writing to --> " + wPath )
 	surface.write_to_png( wPath )
 	fen_index = fen_index + 1

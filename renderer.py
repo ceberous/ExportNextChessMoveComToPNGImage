@@ -2,6 +2,10 @@
 # https://github.com/tikul/fen-to-png
 
 import cairo
+import gtk
+
+hex_white_square = gtk.gdk.Color( "#f0d9b5" )
+hex_black_square = gtk.gdk.Color( "#b58863" )
 
 def load_pieces():
 	result = {}
@@ -18,12 +22,15 @@ class Renderer(object):
 	def __init__(self):
 		self.border = 8
 		self.padding = 1
-		self.margin = 25
-		self.gutter = 50
+		#self.margin = 25
+		self.margin = 0
+		self.gutter = 0
 		self.piece_size = 80
 		self.flip = False
-		self.white = (0.93, 0.82, 0.65)
-		self.black = (0.65, 0.46, 0.32)
+		#self.white = (0.93, 0.82, 0.65)
+		#self.black = (0.65, 0.46, 0.32)
+		self.white = ( ( float( hex_white_square.red ) / 65535 ) , ( float( hex_white_square.green ) / 65535 ) , ( float( hex_white_square.blue ) / 65535 ) )
+		self.black = ( ( float( hex_black_square.red ) / 65535 ) , ( float( hex_black_square.green ) / 65535 ) , ( float( hex_black_square.blue ) / 65535 ) )
 		self.pieces = load_pieces()
 	def ij_to_xy(self, i, j):
 		if self.flip:
@@ -50,26 +57,26 @@ class Renderer(object):
 				x, y = self.ij_to_xy(i, j)
 				dc.rectangle(x, y, self.piece_size, self.piece_size)
 				dc.fill()
-	def render_labels(self, dc):
-		size = self.compute_size()
-		dc.set_font_size(36)
-		dc.set_source_rgb(0, 0, 0)
-		for i in range(8):
-			x, y = self.ij_to_xy(i, 0)
-			x += self.piece_size / 2
-			y = self.margin + self.gutter / 2
-			label = chr(ord('A') + i)
-			tw, th = dc.text_extents(label)[2:4]
-			dc.move_to(x - tw / 2, size - y + th / 2)
-			dc.show_text(label)
-		for j in range(8):
-			x, y = self.ij_to_xy(0, j)
-			x = self.margin + self.gutter / 2
-			y += self.piece_size / 2
-			label = str(8 - j)
-			tw, th = dc.text_extents(label)[2:4]
-			dc.move_to(x - tw / 2, y + th / 2)
-			dc.show_text(label)
+	# def render_labels(self, dc):
+	# 	size = self.compute_size()
+	# 	dc.set_font_size(36)
+	# 	dc.set_source_rgb(0, 0, 0)
+	# 	for i in range(8):
+	# 		x, y = self.ij_to_xy(i, 0)
+	# 		x += self.piece_size / 2
+	# 		y = self.margin + self.gutter / 2
+	# 		label = chr(ord('A') + i)
+	# 		tw, th = dc.text_extents(label)[2:4]
+	# 		dc.move_to(x - tw / 2, size - y + th / 2)
+	# 		dc.show_text(label)
+	# 	for j in range(8):
+	# 		x, y = self.ij_to_xy(0, j)
+	# 		x = self.margin + self.gutter / 2
+	# 		y += self.piece_size / 2
+	# 		label = str(8 - j)
+	# 		tw, th = dc.text_extents(label)[2:4]
+	# 		dc.move_to(x - tw / 2, y + th / 2)
+	# 		dc.show_text(label)
 	def render_piece(self, dc, i, j, piece):
 		x, y = self.ij_to_xy(i, j)
 		dc.set_source_surface(self.pieces[piece], x, y)
@@ -101,16 +108,5 @@ class Renderer(object):
 		self.render_background(dc)
 		self.render_squares(dc)
 		self.render_pieces(dc, fen)
-		self.render_labels(dc)
+		#self.render_labels(dc)
 		return surface
-
-def main():
-	fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-	fen = 'rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'
-	board, move, castle, enpassant, halfmove, fullmove = fen.split( " " )
-	renderer = Renderer()
-	surface = renderer.render(fen)
-	surface.write_to_png('output.png')
-
-if __name__ == '__main__':
-	main()
