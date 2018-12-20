@@ -7,7 +7,7 @@ import json
 fen_index = 1
 opening_name = "c4"
 move_number = 1
-move_name = "b5"
+move_name = "c5"
 
 base_dir = os.path.dirname( os.path.realpath( __file__ ) )
 print( "Base = " + base_dir )
