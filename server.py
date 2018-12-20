@@ -20,7 +20,8 @@ def message_received(client, server, message):
 	#print( "Client(%d) said: %s" % ( client['id'] , message ) )
 	if message != LatestFEN:
 		LatestFEN = message
-		manager.new_fen( LatestFEN )
+		result = manager.new_fen( LatestFEN )
+		server.send_message_to_all( "SUCCESS" )
 
 PORT=9001
 server = WebsocketServer( PORT )

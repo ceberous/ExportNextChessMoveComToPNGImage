@@ -9,12 +9,31 @@
 // ==/UserScript==
 
 var ws = undefined;
+var latest_fen = undefined;
+var processing_fen = false;
+var send_button = null;
+
 function init_websocket() {
 	try { ws = new WebSocket( "ws://localhost:9001" ); }
 	catch( e ) { console.log( "Can't Connect to Python WebSocket" ); }
+	ws.onmessage = function ( message ) {
+		// var x1 = JSON.parse( message.data );
+		// if ( !x1 ) { return; }
+		if ( message.data === "SUCCESS" ) {
+			//send_button.style.backgroundColor = "green";
+			send_button.className = "btn btn-xs btn-success";
+			send_button.classList.remove( "btn-danger" );
+			//send_button.classList.add( "btn-success" );
+			send_button.value = "Send FEN";
+			processing_fen = false;
+			console.log( "READY" );
+		}
+	};
+	ws.onerror = function (error) {
+		console.log( "WebSocket error: " + error.toString() );
+	};
 }
 
-var latest_fen = undefined;
 function try_websocket_send() {
 	if ( !latest_fen ) { return; }
 	try { ws.send( latest_fen ); }
@@ -53,8 +72,17 @@ function getLatestFEN() {
 
 }
 
+
+function add_send_button() {
+	var calculate_button_parent = document.getElementById( "calculate-button" ).parentElement;
+	send_button = document.createElement( "div" );
+	send_button.innerHTML = '<button id="send-fen-button" class="btn btn-xs btn-success" style="min-width: 0px;">Send FEN</button>';
+	calculate_button_parent.appendChild( send_button );
+}
+
 function addEventListeners() {
 	init_websocket();
+	add_send_button();
 	document.body.addEventListener( "keydown" , function( event ) {
 		if ( event.key === "Enter" ) {
 			getLatestFEN();
@@ -71,7 +99,28 @@ function addEventListeners() {
 			// }
 		}
 	});
+	document.getElementById( "send-fen-button" ).addEventListener( "click" , function( event ) {
+		if ( !processing_fen ) {
+			processing_fen = true;
+			//send_button.style.backgroundColor = "red";
+			send_button.className = "btn btn-xs btn-danger";
+			send_button.classList.remove( "btn-success" );
+			//send_button.classList.add( "btn-danger" );
+			send_button.value = "Processing"
+			console.log( "sending FEN !!!" );
+			getLatestFEN();
+			console.log( latest_fen );
+			try_websocket_send();
+		}
+		else {
+			//console.log( "Still Processing , wait" );
+			processing_fen = false;
+			send_button.className = "btn btn-xs btn-success";
+			send_button.classList.remove( "btn-danger" );
+			//send_button.classList.add( "btn-success" );
+		}
+	});
 }
 
-window.addEventListener ( "load" , addEventListeners );
 
+window.addEventListener ( "load" , addEventListeners );
