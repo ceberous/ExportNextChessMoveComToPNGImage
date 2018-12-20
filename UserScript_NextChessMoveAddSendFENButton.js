@@ -69,6 +69,12 @@ function getLatestFEN() {
 		}
 		else { latest_fen = "error , re-print link order" }
 	}
+	else if ( latest_fen.substring( 0 , 4 ) === "2018" ) {
+		if ( links[ 12 ] ) {
+			latest_fen = links[ 12 ].innerHTML
+		}
+		else { latest_fen = "error , re-print link order" }
+	}
 
 }
 
