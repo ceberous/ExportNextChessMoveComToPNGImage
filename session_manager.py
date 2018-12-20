@@ -6,12 +6,16 @@ import json
 
 fen_index = 1
 opening_name = "c4"
-move_number = "a6"
+move_number = 1
+move_name = "b6"
 
 base_dir = os.path.dirname( os.path.realpath( __file__ ) )
-opening_dir = os.path.join( base_dir , opening_name )
-move_dir = os.path.join( opening_dir , str( move_number ) )
-move_list_json_fp = os.path.join( move_dir , str( move_number ) + ".json" )
+print( "Base = " + base_dir )
+opening_dir = os.path.join( base_dir , opening_name , str( move_number ) )
+print( "Opening = " + opening_dir )
+move_dir = os.path.join( opening_dir , str( move_name ) )
+print( "Move = " + str( move_dir ) )
+move_list_json_fp = os.path.join( move_dir , opening_name + "--" + str( move_number ) + "--" + str( move_name ) + ".json" )
 distutils.dir_util.mkpath( move_dir )
 
 # Store it in a JSON VoHiYo
