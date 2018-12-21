@@ -5,6 +5,7 @@ import time
 import personal
 
 def black_best_move( starting_fen ):
+	print( "BestBlackMove()" )
 	time1 = time.time()
 	headers = {
 		'origin': 'https://nextchessmove.com',
@@ -42,11 +43,12 @@ def black_best_move( starting_fen ):
 	board.push( uci_move )
 	new_fen = board.fen()
 	time2 = time.time()
-	print '%0.3f seconds == %s' % ( (time2-time1 ) , new_fen )
+	print '%0.3f seconds == BLACK == %s' % ( (time2-time1 ) , new_fen )
 	return new_fen
 
 
 def white_best_move( starting_fen ):
+	print( "BestWhiteMove()" )
 	time1 = time.time()
 	headers = {
 			'origin': 'https://nextchessmove.com',
@@ -84,7 +86,7 @@ def white_best_move( starting_fen ):
 	board.push( uci_move )
 	new_fen = board.fen()
 	time2 = time.time()
-	print '%0.3f seconds == %s' % ( (time2-time1 ) , new_fen )
+	print '%0.3f seconds == WHITE == %s' % ( (time2-time1 ) , new_fen )
 	return new_fen
 
 
@@ -108,4 +110,7 @@ def get_best_moves_from_fens( fen_list ):
 	return replies
 
 
-get_best_moves_from_fens( [ "rnbqkbnr/pppppp1p/8/6p1/2PP4/8/PP2PPPP/RNBQKBNR b KQkq - 0 1" , "rnbqkbnr/pppppp1p/8/6p1/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 1" ] )
+#get_best_moves_from_fens( [ "rnbqkbnr/pppppp1p/8/6p1/2PP4/8/PP2PPPP/RNBQKBNR b KQkq - 0 1" , "rnbqkbnr/pppppp1p/8/6p1/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 1" ] )
+
+
+#get_best_moves_from_fens( [ "rnbqkb1r/pppppp1p/7n/6p1/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 1 2" ] )
