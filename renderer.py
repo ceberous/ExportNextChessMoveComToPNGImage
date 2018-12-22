@@ -101,7 +101,7 @@ class Renderer(object):
 		dc.rectangle(m + g, m, size - m * 2 - g, size - m * 2 - g)
 		dc.fill()
 	def render(self, fen):
-		self.flip = fen.split()[1].lower() == 'b'
+		#self.flip = fen.split()[1].lower() == 'b'
 		size = self.compute_size()
 		surface = cairo.ImageSurface(cairo.FORMAT_RGB24, size, size)
 		dc = cairo.Context(surface)

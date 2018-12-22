@@ -5,9 +5,9 @@ from collections import defaultdict
 import json
 
 fen_index = 1
-opening_name = "c4"
+opening_name = "test"
 move_number = 1
-move_name = "g6"
+move_name = "g5"
 
 base_dir = os.path.dirname( os.path.realpath( __file__ ) )
 print( "Base = " + base_dir )
@@ -56,3 +56,17 @@ def new_fen( wFEN ):
 	result = render_fen( wFEN )
 	print( "Finished !" )
 	return result
+
+
+def process_batch( batch ):
+	#total_fens = str( len( batch[ "moves" ] ) )
+	for index , key in enumerate( batch[ "moves" ] ):
+		# print( "\n[ " + str( index + 1 ) + " ] of " + total_fens + " " + fen )
+		# best_reply = get_best_move_as_fen( fen )
+		# batch[ "moves" ][ key ][ "end" ] = best_reply
+		render_fen( batch[ "starting_fen" ] )
+		render_fen( batch[ "moves" ][ index ][ "start" ] )
+		render_fen( batch[ "moves" ][ index ][ "end" ] )
+	with open( move_list_json_fp , "w+" ) as outfile:
+		json.dump( batch , outfile )
+	return batch
